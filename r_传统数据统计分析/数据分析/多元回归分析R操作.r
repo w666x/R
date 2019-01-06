@@ -1,0 +1,63 @@
+blood=data.frame(
+x1=c(76.0,91.5,85.5,82.5,79.0,80.5,74.5,79.0,85.0,76.5,82.0,95.0,92.5),
+x2=c(50,20,20,30,30,50,60,50,40,55,40,40,20),
+y=c(120,141,124,126,117,125,123,125,132,123,132,155,147))
+lm.sol=lm(y~x1+x2,data=blood)
+summary(lm.sol)
+#参数的区间估计
+beta.int<-function(fm,alpha=0.05){
+   A<-summary(fm)$coefficients
+   df<-fm$df.residual
+   left<-A[,1]-A[,2]*qt(1-alpha/2, df)
+   right<-A[,1]+A[,2]*qt(1-alpha/2, df)
+   rowname<-dimnames(A)[[1]]
+   colname<-c("Estimate", "Left", "Right")
+   matrix(c(A[,1], left, right), ncol=3,
+       dimnames = list(rowname, colname ))  }
+beta.int(lm.sol)
+#预测
+new=data.frame(x1=80,x2=40)
+lm.pred=predict(lm.sol,new,interval='prediction',level=0.95)
+lm.pred
+#拟合修正模型
+#new.model=update(old.model,new.formula)
+fm5=lm(y~x1+x2,data=blood)
+fm6=update(fm5,.~.-x2)
+sfm5=update(fm5,sqrt(.)~.)
+#举例说明
+blood=data.frame(
+x1=c(76.0,91.5,85.5,82.5,79.0,80.5,74.5,79.0,85.0,76.5,82.0,95.0,92.5),
+x2=c(50,20,20,30,30,50,60,50,40,55,40,40,20),
+y=c(120,141,124,126,117,125,123,125,132,123,132,155,147))
+fm5=lm(y~x1,data=blood)
+fm6=update(fm5,.~.+x2)
+fm7=lm(fm6,data=blood)
+summary(fm7)
+#计算实例
+toothpaste=data.frame(
+x1=c(-0.05,0.25,0.60,0,0.25,0.20,0.15,0.05,-0.15,0.15,0.20,0.10,0.40,0.45,0.35,0.30,0.50,0.50,0.40,-0.05,-0.05,-0.10,0.20,0.10,0.50,0.60,-0.05,0,0.05,0.55),
+x2=c(5.50,6.75,7.25,5.50,7.00,6.50,6.75,5.25,5.25,6.00,6.50,6.25,7.00,6.90,6.80,6.80,7.10,7.00,6.80,6.50,6.25,6.00,6.50,7.00,6.80,6.80,6.50,5.75,5.80,6.80),
+y=c(7.38,8.51,9.52,7.50,9.33,8.28,8.75,7.87,7.10,8.00,7.89,8.15,9.10,8.86,8.90,8.87,9.26,9.00,8.75,7.95,7.65,7.27,8.00,8.50,8.75,9.21,8.27,7.67,7.93,9.26))
+lm.sol=lm(y~x1+x2,data=toothpaste)
+summary(lm.sol)
+#改进
+attach(toothpaste)
+plot(toothpaste$y~x1)
+abline(lm(y~x1))
+lm2.sol=lm(y~x2+I(x2^2))
+x=seq(min(x2),max(x2),length=200)
+y1=predict(lm2.sol,data.frame(x2=x))
+plot(y~x2)
+lines(x,y1)
+#改进
+lm.new=update(lm.sol,y~.+I(x2^2))
+lm(formula=lm.new,data=toothpaste)
+#进一步改进
+lm2.new=update(lm.new,.~.-x2)
+summary(lm2.new)
+#再改进（考虑交叉影响）
+lm3.new=update(lm.new,.~.+x1*x2)
+summary(lm3.new)
+#残差图效果比较（如有可能可以考虑建立动态图，按enter切换）
+plot(lm3.new$residuals)
+lines(lm3.new$residuals)
