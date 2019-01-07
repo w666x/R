@@ -1,7 +1,7 @@
 ##关联分析（支持度，置信度，提升度。控制关联强度）
 ##啤酒和尿布的故事
 ##从大量数据中发现项集之间的有趣关联或相互关系
-#install.packages("arules")
+# install.packages("arules")
 library ( arules )  
 #arules包：关联规则的数字化生成
 data("Groceries")                                

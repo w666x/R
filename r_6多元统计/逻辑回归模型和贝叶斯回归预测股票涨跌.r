@@ -20,7 +20,7 @@ corrplot(corr = cor(Smarket[,-9]),order = "AOE",
 corrplot(corr = cor(Smarket[,-9]),add = T,type = "lower",
          method = "number",order = "AOE",diag = F,tl.pos = "n",cl.pos = "n")
 
-#训练兵使用逻辑回归模型
+#训练并使用逻辑回归模型
 attach(Smarket)
 #05年之前作为训练集，05年之后作为测试集
 train=Year<2005

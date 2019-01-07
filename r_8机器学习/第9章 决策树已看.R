@@ -2,11 +2,11 @@
 # C4.5 # 最后面 c4.5 调用失败，挺尴尬的哦
 #Recursive Partitioning and Regression Trees
 #分类树和回归树
-#library(mvpart)版本有点老了
+# library(mvpart) #版本有点老了
 library(rpart) #建立分类树以及递归算法
 library(rpart.plot) #对rpart绘制决策树
 library(maptree)  #用来剪枝
-library(RWeka)  #建立R与weka的连接
+# library(RWeka)  #建立R与weka的连接
 data(car.test.frame)
 head(car.test.frame)
 dim(car.test.frame)

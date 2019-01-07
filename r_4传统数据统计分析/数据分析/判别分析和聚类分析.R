@@ -43,7 +43,6 @@ G=as.factor(G)
 B$class=G
 attach(B)
 names(B) #显示数据中所有的对象
-
 #判别分析
 library(MASS)
 B.lda=lda(class~X1+X2+X3+X4)
