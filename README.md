@@ -1,13 +1,13 @@
 # R_相关
 * 程序进程中获取用户的指令，终端调试不错
-#####  传参控制进程
-  switch(menu(c("coutinue", "break")),
+    -  # 传参控制进程,变量 
+       switch(menu(c("coutinue", "break")),
        cat("continue the process\n"), stop("we are stoping the process"))
-#####  传参给变量 
-  cat("输入第二行数字，以空格间隔，以回车终止")
+       # 传参给变量 
+       cat("输入第二行数字，以空格间隔，以回车终止")
        line2 <- scan()
-#####  传参给变量 
-  input <- readline("please enter your input:")
+       # 传参给变量 
+       input <- readline("please enter your input:")
 
 * 可以产生进度条的相关函数，在有多步循环过程中加入这个东西，来判断执行的进程是很好用的
 #####  产生进度条
