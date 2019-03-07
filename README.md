@@ -10,7 +10,12 @@
            line2 <- scan()
            #传参给变量 
            input <- readline("please enter your input:")
-
+   * 将字符串转化成可执行命令
+   
+           x <- 1:10
+           a <- "print(x)"
+           class (a)
+           eval(parse(text = a))
 * 可以产生进度条的相关函数，在有多步循环过程中加入这个东西，来判断执行的进程是很好用的
 #####  产生进度条
     -   k=10
