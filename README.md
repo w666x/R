@@ -10,11 +10,13 @@
            #传参给变量 
            input <- readline("please enter your input:")
           
-  * 终端传参-需要加入Args <- commandArgs()。输入的参数从第六个和第七个开始
-   在unix、windows外部需要调用R脚本执行，然后又需要输入不同的参数，类似shell脚本的命令行参数输入，可以使用Rcript命令实现。
-   命令格式：Rscript [options] [-e expression] file [args] 
-   file表示需要执行的脚本，[options] [-e expression] 可以有也可以不用。
-   
+  * 终端传参
+  
+         Args <- commandArgs() #需要在脚本第一行加入此命令。输入的参数从第六个和第七个开始
+         # 在unix、windows外部需要调用R脚本执行，然后又需要输入不同的参数，类似shell脚本的命令行参数输入，可以使用Rcript命令实现。
+         Rscript [options] [-e expression] file [args] #命令格式
+         #file表示需要执行的脚本，[options] [-e expression] 可以有也可以不用。
+
    * 将字符串转化成可执行命令
    
            x <- 1:10
