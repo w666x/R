@@ -28,7 +28,8 @@
     -   k=10
         library(plyr)
         pbar=create_progress_bar('text') #显示运行步骤
-        pbar$init(k);pbar$step()   
+        pbar$init(k) # 在这之前都放到循环外，后面的放到循环中
+        pbar$step()   
 
   * 【chapter one】[1基础](https://github.com/w666x/R/tree/master/r_1基础应用)
     * 安装R包的方法
