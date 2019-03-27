@@ -1,23 +1,23 @@
 #2.1.1
-data()  #²é¿´Êı¾İ¼¯ÁĞ±í
-data(CO2)  #ÔØÈëCO2Êı¾İ¼¯£¨À´×Ôdatasets£©
+data()  #æŸ¥çœ‹æ•°æ®é›†åˆ—è¡¨
+data(CO2)  #è½½å…¥CO2æ•°æ®é›†ï¼ˆæ¥è‡ªdatasetsï¼‰
 
-library(MASS)   #ÔØÈëpackage MASS
-data(package="MASS")   #²é¿´MASSÖĞÊı¾İ¼¯
-data(SP500,package="MASS")  #ÔØÈëMASSÖĞµÄSP500Êı¾İ¼¯£¬Ò²¿É¼ò»¯Îªdata(SP500)
+library(MASS)   #è½½å…¥package MASS
+data(package="MASS")   #æŸ¥çœ‹MASSä¸­æ•°æ®é›†
+data(SP500,package="MASS")  #è½½å…¥MASSä¸­çš„SP500æ•°æ®é›†ï¼Œä¹Ÿå¯ç®€åŒ–ä¸ºdata(SP500)
 
 
 #2.1.2
-getwd()   #·µ»Øµ±Ç°¹¤×÷Ä¿Â¼
-setwd("d:/data")  #Ò²¿ÉÒÔĞ´³Ésetwd("d:\\data")
+getwd()   #è¿”å›å½“å‰å·¥ä½œç›®å½•
+setwd("d:/data")  #ä¹Ÿå¯ä»¥å†™æˆsetwd("d:\\data")
 getwd()
 
-data=read.table("d:/data/salary.txt",header=T)  #¶ÁÈ¡Êı¾İ
+data=read.table("d:/data/salary.txt",header=T)  #è¯»å–æ•°æ®
 data=read.table("salary.txt",header=T)
 data
 data=read.csv("salary.csv",header=T)
 
-data2=scan("salary.txt",skip=1,what=list(City="",Work=0,Price=0,Salary=0))  #ÓÉÓÚ²»´æÔÚheader²ÎÊı£¬skip=1ËµÃ÷¶ÁÈ¡Ê±Ìø¹ı±íÊ¾Ãû³ÆµÄµÚÒ»ĞĞ
+data2=scan("salary.txt",skip=1,what=list(City="",Work=0,Price=0,Salary=0))  #ç”±äºä¸å­˜åœ¨headerå‚æ•°ï¼Œskip=1è¯´æ˜è¯»å–æ—¶è·³è¿‡è¡¨ç¤ºåç§°çš„ç¬¬ä¸€è¡Œ
 data2
 mode(data)
 names(data)
@@ -28,6 +28,31 @@ Salary
 detach(data)
 Salary
 
+# æå–æ–‡ä»¶
+getwd()
+setwd("/home/wxing/r_workfile/X37_project/raw_data")
+list.files()
+
+# jsonè¯»å–æ–‡ä»¶1----åªèƒ½è¯»å–1æ¡æ•°æ®
+library(rjson)
+data1 = fromJSON(file = "2019-3-24 åšè¶Šå£ç¢‘.json",
+                 method = "R", unexpected.escape = "error", simplify = TRUE )
+head(data1)
+class(data1)
+length(data1)
+length(data1$title)
+
+# jsonè¯»å–æ–‡ä»¶2 -----è¯»å–äº†æ‰€æœ‰çš„æ•°æ®4546
+library(jsonlite)
+jsonlite::stream_in(file("2019-3-24 åšè¶Šå£ç¢‘.json"),pagesize = 10)
+data2=jsonlite::stream_in(file("2019-3-24 åšè¶Šå£ç¢‘.json"),pagesize = 50)
+class(data2)
+length(data2$title)
+head(data2, n=2)
+names(data2)
+
+
+
 
 #2.1.3
 data.fwf=read.fwf("d:/data/fwf.txt",widths=c(2,4,4,3),col.names=c("W","X","Y","Z"))
@@ -35,69 +60,69 @@ data.fwf
 
 
 #2.1.4
-data.excel=read.delim("clipboard")  #clipboard¼´¼ôÇĞ°å
+data.excel=read.delim("clipboard")  #clipboardå³å‰ªåˆ‡æ¿
 mode(data.excel);dim(data.excel)
 
 install.packages("RODBC")
 library(RODBC)
-channel=odbcConnectExcel2007("d:/data/Salary.xlsx")  #»ñÈ¡ExcelÁ¬½Ó
-sqlTables(channel)  #ÁĞ³öexcelÖĞµÄ±í¸ñ
-#»ñÈ¡Sheet1ÖĞµÄÊı¾İ£¬¿ÉÒÔÊ¹ÓÃÈçÏÂµÄÈÎÒâÒ»ÖÖ·½Ê½
-data.excel2=sqlFetch(channel,"Sheet1")  #Ö±½Ó»ñÈ¡
-data.excel2=sqlQuery(channel,"select*from[Sheet1$]")  #Ê¹ÓÃSQLÓï¾ä»ñÈ¡
-close(channel)  #¹Ø±ÕODBCÁ¬½Ó£¬ÊÍ·Å¿Õ¼ä
+channel=odbcConnectExcel2007("d:/data/Salary.xlsx")  #è·å–Excelè¿æ¥
+sqlTables(channel)  #åˆ—å‡ºexcelä¸­çš„è¡¨æ ¼
+#è·å–Sheet1ä¸­çš„æ•°æ®ï¼Œå¯ä»¥ä½¿ç”¨å¦‚ä¸‹çš„ä»»æ„ä¸€ç§æ–¹å¼
+data.excel2=sqlFetch(channel,"Sheet1")  #ç›´æ¥è·å–
+data.excel2=sqlQuery(channel,"select*from[Sheet1$]")  #ä½¿ç”¨SQLè¯­å¥è·å–
+close(channel)  #å…³é—­ODBCè¿æ¥ï¼Œé‡Šæ”¾ç©ºé—´
 mode(data.excel2);dim(data.excel2)
 
 
 #2.1.5
-odbcDataSources()  #²é¿´¿ÉÓÃµÄÊı¾İÔ´
+odbcDataSources()  #æŸ¥çœ‹å¯ç”¨çš„æ•°æ®æº
 
-#Í¨¹ıRMySQL/DBI¶ÁÈ¡Êı¾İ¿â
-library(RMySQL)  #Í¬Ê±Ò²»á¼ÓÔØDBI³ÌĞò°ü
-con=dbConnect(MySQL(),user=¡±root¡±,password=¡±111111¡±,dbname = "test")  #´ò¿ªÒ»¸öMySQLÊı¾İ¿âµÄÁ¬½Ó
-table.names=dbListTables(con)  # Êı¾İ¿âÖĞµÄ±íÃû´æÈëtable.names£¬·½±ã²é¿´
-field.names=dbListFeilds(con,¡±students¡±)  # ÁĞ³ö±ístudentsÖĞµÄ×Ö¶Î
-dbReadTable(con,¡±students¡±)  #»ñµÃ²¢ÁĞ³öÕû¸ö±í
-dbSendQuery(con, ¡°SET NAMES gbk¡±)  #´«ËÍ²éÑ¯£¬ËµÃ÷ÓÃÊ²Ã´×Ö·û¼¯À´»ñÈ¡Êı¾İ¿â×Ö¶Î£¬gbk»òutf8ÒªÓëÖ®Ç°ÉèÖÃµÄ±£³ÖÒ»ÖÂ¡£
-query=dbSendQuery(con, ¡°select * from students order by age¡±)
-fetch(query)  #ÏÔÊ¾ÒÔÄêÁäÅÅĞòµÄ²éÑ¯½á¹û
-dbRemoveTable(con,¡±students¡±)  # É¾³ı±í£¨É¾³ı³É¹¦ºóÏÔÊ¾Âß¼­ÖµTRUE£©
-dbDisconnect(con)  # ¹Ø±ÕÁ¬½Ó
+#é€šè¿‡RMySQL/DBIè¯»å–æ•°æ®åº“
+library(RMySQL)  #åŒæ—¶ä¹Ÿä¼šåŠ è½½DBIç¨‹åºåŒ…
+con=dbConnect(MySQL(),user=â€rootâ€,password=â€111111â€,dbname = "test")  #æ‰“å¼€ä¸€ä¸ªMySQLæ•°æ®åº“çš„è¿æ¥
+table.names=dbListTables(con)  # æ•°æ®åº“ä¸­çš„è¡¨åå­˜å…¥table.namesï¼Œæ–¹ä¾¿æŸ¥çœ‹
+field.names=dbListFeilds(con,â€studentsâ€)  # åˆ—å‡ºè¡¨studentsä¸­çš„å­—æ®µ
+dbReadTable(con,â€studentsâ€)  #è·å¾—å¹¶åˆ—å‡ºæ•´ä¸ªè¡¨
+dbSendQuery(con, â€œSET NAMES gbkâ€)  #ä¼ é€æŸ¥è¯¢ï¼Œè¯´æ˜ç”¨ä»€ä¹ˆå­—ç¬¦é›†æ¥è·å–æ•°æ®åº“å­—æ®µï¼Œgbkæˆ–utf8è¦ä¸ä¹‹å‰è®¾ç½®çš„ä¿æŒä¸€è‡´ã€‚
+query=dbSendQuery(con, â€œselect * from students order by ageâ€)
+fetch(query)  #æ˜¾ç¤ºä»¥å¹´é¾„æ’åºçš„æŸ¥è¯¢ç»“æœ
+dbRemoveTable(con,â€studentsâ€)  # åˆ é™¤è¡¨ï¼ˆåˆ é™¤æˆåŠŸåæ˜¾ç¤ºé€»è¾‘å€¼TRUEï¼‰
+dbDisconnect(con)  # å…³é—­è¿æ¥
 
-#Í¨¹ıRJDBC¶ÁÈ¡Êı¾İ¿â
+#é€šè¿‡RJDBCè¯»å–æ•°æ®åº“
 library(RJDBC)
 help(JDBC)
 drv=JDBC("com.mysql.jdbc.Driver",  "/etc/jdbc/mysql-connector-java-3.1.14-bin.jar", "`")
 conn=dbConnect(drv, "jdbc:mysql://localhost/test")
-dbListTables(conn)  #ÁĞ³öÊı¾İ¿âÖĞµÄ±í
-dbGetQuery(conn, "select count(*) from iris")  #Ö´ĞĞ²éÑ¯
+dbListTables(conn)  #åˆ—å‡ºæ•°æ®åº“ä¸­çš„è¡¨
+dbGetQuery(conn, "select count(*) from iris")  #æ‰§è¡ŒæŸ¥è¯¢
 
 
 #2.1.6
-install.packages("XML")  #°²×°½âÎöXMLµÄ°ü
+install.packages("XML")  #å®‰è£…è§£æXMLçš„åŒ…
 library(XML)
-baseURL="http://data.eastmoney.com/center/stock.html"  #´æÈëÍøÖ·
+baseURL="http://data.eastmoney.com/center/stock.html"  #å­˜å…¥ç½‘å€
 table=readHTMLTable(baseURL,header=TRUE,which=1)
-mode(table);dim(table)   #²é¿´tableµÄÀàĞÍºÍÊı¾İÎ¬¶È
-head(table,2)   #²é¿´ÁĞ±ítableÇ°Á½ĞĞµÄÊı¾İ
-names(table)=c("Àà±ğ","³É½»Á¿","³É½»½ğ¶î","×ÜÊĞÖµ","Á÷Í¨ÊĞÖµ","ÉÏÊĞ¹«Ë¾","Æ½¾ùÊĞÓ¯ÂÊ")  #¸ø±äÁ¿ÃûÖØĞÂ¸³Öµ
-table$Àà±ğ=c("»¦ÊĞ","ÉîÊĞ","ÖĞĞ¡°å","´´Òµ°å")   #¸øµÚÒ»¸ö±äÁ¿¡°Àà±ğ¡±ÖØĞÂ¸³Öµ
+mode(table);dim(table)   #æŸ¥çœ‹tableçš„ç±»å‹å’Œæ•°æ®ç»´åº¦
+head(table,2)   #æŸ¥çœ‹åˆ—è¡¨tableå‰ä¸¤è¡Œçš„æ•°æ®
+names(table)=c("ç±»åˆ«","æˆäº¤é‡","æˆäº¤é‡‘é¢","æ€»å¸‚å€¼","æµé€šå¸‚å€¼","ä¸Šå¸‚å…¬å¸","å¹³å‡å¸‚ç›ˆç‡")  #ç»™å˜é‡åé‡æ–°èµ‹å€¼
+table$ç±»åˆ«=c("æ²ªå¸‚","æ·±å¸‚","ä¸­å°æ¿","åˆ›ä¸šæ¿")   #ç»™ç¬¬ä¸€ä¸ªå˜é‡â€œç±»åˆ«â€é‡æ–°èµ‹å€¼
 head(table,2)
 
 u="http://www.basketball-reference.com/players/j/jamesle01.html"
 James=readHTMLTable(readLines(u), which=3, header=TRUE)
 dim(James)
-James[1:5,1:10]  #²é¿´Ç°5ÄêµÄÊı¾İ£¬È¡ÆäÖĞÇ°10¸ö±äÁ¿
+James[1:5,1:10]  #æŸ¥çœ‹å‰5å¹´çš„æ•°æ®ï¼Œå–å…¶ä¸­å‰10ä¸ªå˜é‡
 
 
 #2.1.7
 load("d:/data/salary.Rdata")
-head(data,5)  #ÏÔÊ¾Êı¾İ¿òÇ°5ĞĞµÄ¼ÇÂ¼
+head(data,5)  #æ˜¾ç¤ºæ•°æ®æ¡†å‰5è¡Œçš„è®°å½•
 
 
 #2.1.8
 library(foreign)
-data.spss=read.spss("d:/data/salary2.sav",to.data.frame=T)  #data.spss¶ÁÈëºóÎªÊı¾İ¿ò±äÁ¿
+data.spss=read.spss("d:/data/salary2.sav",to.data.frame=T)  #data.spssè¯»å…¥åä¸ºæ•°æ®æ¡†å˜é‡
 dim(data.spss)
 
 library(Hmisc)
@@ -110,33 +135,33 @@ company1=sasxport.get("d:/data/company.xpt")
 
 
 #2.2.1
-cat(c("AB", "C"), c("E", "F"), "n", sep="")  #ÔÚÆÁÄ»ÉÏÊä³ö
+cat(c("AB", "C"), c("E", "F"), "n", sep="")  #åœ¨å±å¹•ä¸Šè¾“å‡º
 i=1:5
-cat("i = ", i, "n",sep=",")  #ÒÔ¶ººÅÎª·Ö¸ô·û
+cat("i = ", i, "n",sep=",")  #ä»¥é€—å·ä¸ºåˆ†éš”ç¬¦
 
-cat(c("AB", "C"), c("E", "F"),file="d:/data/cat.txt",sep=".")  #ÏòÖ¸¶¨ÎÄ¼şĞ´ÈëÊı¾İ
-readLines("d:/data/cat.txt")  #ÒÔĞĞµÄĞÎÊ½¶ÁÈ¡ÎÄ±¾
+cat(c("AB", "C"), c("E", "F"),file="d:/data/cat.txt",sep=".")  #å‘æŒ‡å®šæ–‡ä»¶å†™å…¥æ•°æ®
+readLines("d:/data/cat.txt")  #ä»¥è¡Œçš„å½¢å¼è¯»å–æ–‡æœ¬
 
 i=1:5
 cat(i,file="d:/data/cat.txt",append=TRUE)
 readLines("d:/data/cat.txt")
 
 a=file("d:/data/cat.txt")
-cat("1 2 3 4 ","2 3 5 7","11 13 15 17", file=a, sep="\n")  #·Ö¸ô·ûsep="\n"±íÊ¾»»ĞĞ
+cat("1 2 3 4 ","2 3 5 7","11 13 15 17", file=a, sep="\n")  #åˆ†éš”ç¬¦sep="\n"è¡¨ç¤ºæ¢è¡Œ
 read.table(a)
 
 
 #2.2.2
 write.csv(data,file="d:/data/salary1.csv",row.names=F,quote=F)
-data.csv=read.csv("d:/data/salary1.csv")  #±£´æÎÄ±¾ÎÄ¼ş
+data.csv=read.csv("d:/data/salary1.csv")  #ä¿å­˜æ–‡æœ¬æ–‡ä»¶
 dim(data.csv)
 
 
 #2.2.3
-save(data,file="d:/data/salary1.Rdata")  #±£´æR¸ñÊ½ÎÄ¼ş
+save(data,file="d:/data/salary1.Rdata")  #ä¿å­˜Ræ ¼å¼æ–‡ä»¶
 load("d:/data/salary.Rdata")
 
 
 #2.2.4
 library(foreign)
-write.foreign(data,datafile="d:/data/salary.sav",codefile="d:/data/code.txt",package="SPSS")  #±£´æÎªsavÎÄ¼ş¸ñÊ½
+write.foreign(data,datafile="d:/data/salary.sav",codefile="d:/data/code.txt",package="SPSS")  #ä¿å­˜ä¸ºsavæ–‡ä»¶æ ¼å¼
