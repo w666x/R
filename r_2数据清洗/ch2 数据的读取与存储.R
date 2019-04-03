@@ -2,6 +2,7 @@
   data_ada=read.csv(file = paste(address1,"data_ada.csv",sep =""))%>%filter(as.Date(ORDER_DATE)>'2019-01-01')
 # 对选定字段的删重  
   temp_provin_dlr<-select(INFO_DLR,PROVINCE_NAME,DLR_CODE)%>%dplyr::distinct()
+  LAG_SD<-subset(CBI_SD_C,select =c('DLR_CODE','CAR_SERIES_ID','ORDER_DATE'))
 
 # 对数据集ADATA_BOMSD数据集中DLR_CODE和CAR_SERIES_ID作groupby分类汇总
   ADATA_PURSTAT<-dplyr::group_by(ADATA_BOMSD,DLR_CODE,CAR_SERIES_ID)%>%
