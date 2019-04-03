@@ -3,6 +3,11 @@
 # 对选定字段的删重  
   temp_provin_dlr<-select(INFO_DLR,PROVINCE_NAME,DLR_CODE)%>%dplyr::distinct()
 
+# 对数据集ADATA_BOMSD数据集中DLR_CODE和CAR_SERIES_ID作groupby分类汇总
+  ADATA_PURSTAT<-dplyr::group_by(ADATA_BOMSD,DLR_CODE,CAR_SERIES_ID)%>%
+    dplyr::summarise(MIN_DATE=min(ORDER_DATE),SUM_PUR=sum(PUR_NUM,na.rm=T))%>%
+    as.data.frame(stringsAsFctors=F)
+
 #2.1.1
 data()  #查看数据集列表
 data(CO2)  #载入CO2数据集（来自datasets）
