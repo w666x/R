@@ -1,3 +1,8 @@
+# 从csv文件中读取文件，并做部分条件筛选
+  data_ada=read.csv(file = paste(address1,"data_ada.csv",sep =""))%>%filter(as.Date(ORDER_DATE)>'2019-01-01')
+# 对选定字段的删重  
+  temp_provin_dlr<-select(INFO_DLR,PROVINCE_NAME,DLR_CODE)%>%dplyr::distinct()
+
 #2.1.1
 data()  #查看数据集列表
 data(CO2)  #载入CO2数据集（来自datasets）
