@@ -1,13 +1,18 @@
+# å¯¹æ•°æ®é›†LAG_DATA_TRYåšç›¸å…³å¤„ç†
+# æ ¹æ®DLR_CODEå’ŒORDER_DATEåˆ†ç»„å¯¹ORDER_6Såšæ±‡æ€»å¹¶èµ‹å€¼ç»™ORDER_6SD
+LAG_DATA_TRY[,ORDER_6SD := sum(ORDER_6S),by=list(DLR_CODE,ORDER_DATE)]
+
+
 #3.1
 data=read.table("d:/data/salary.txt",header=T)
 attach(data)
-mean(Salary)  #Çó¾ùÖµ
-length(Salary)  #Êı¾İ³¤¶È£¨¸öÊı£©
-cumsum(Salary)  #ÀÛ»ı¹¤×Ê
+mean(Salary)  #æ±‚å‡å€¼
+length(Salary)  #æ•°æ®é•¿åº¦ï¼ˆä¸ªæ•°ï¼‰
+cumsum(Salary)  #ç´¯ç§¯å·¥èµ„
 
 salary1=cut(Salary,3,labels=c("low","medium","high"))
 table(salary1)
-salary1=cut(Salary,3,labels=c("low","medium","high"))  #¸øÃ¿¸öÇø¼äÉèÖÃ±êÇ©
+salary1=cut(Salary,3,labels=c("low","medium","high"))  #ç»™æ¯ä¸ªåŒºé—´è®¾ç½®æ ‡ç­¾
 table(salary1)
 
 breakpoints=c(0,30,40,50,60,70)
@@ -15,22 +20,22 @@ salary2=cut(Salary,breaks=breakpoints)
 table(salary2)
 
 pic=function(x){
-  par(mfrow=c(2,2))  #»æÍ¼ÇøÓò·Ö¸îÎªËÄ²¿·Ö
-  hist(x)            #Ö±·½Í¼
-  dotchart(x)        #µãÍ¼
-  boxplot(x)         #ÏäÏßÍ¼
-  qqnorm(x);qqline(x)#ÕıÌ¬¸ÅÂÊÍ¼
-  par(mfrow=c(1,1))  #»Ö¸´µ¥Í¼ÇøÓò
+  par(mfrow=c(2,2))  #ç»˜å›¾åŒºåŸŸåˆ†å‰²ä¸ºå››éƒ¨åˆ†
+  hist(x)            #ç›´æ–¹å›¾
+  dotchart(x)        #ç‚¹å›¾
+  boxplot(x)         #ç®±çº¿å›¾
+  qqnorm(x);qqline(x)#æ­£æ€æ¦‚ç‡å›¾
+  par(mfrow=c(1,1))  #æ¢å¤å•å›¾åŒºåŸŸ
 }
-pic(Salary)  #µ÷ÓÃ±àĞ´ºÃµÄº¯Êıpic()
+pic(Salary)  #è°ƒç”¨ç¼–å†™å¥½çš„å‡½æ•°pic()
 
 
-#3.2.1 ĞŞ¸ÄÊı¾İ±êÇ©
+#3.2.1 ä¿®æ”¹æ•°æ®æ ‡ç­¾
 data=read.table("d:/data/salary.txt",header=T,stringsAsFactors=F)
 names(data)=c("CITY","WORK","PRICE","SALARY")
 names(data)
 
-#3.2.2 ĞĞÁĞÉ¾³ı
+#3.2.2 è¡Œåˆ—åˆ é™¤
 data2=data[-1,-3]
 data2
 
@@ -64,24 +69,24 @@ dim(data2)
 data3=na.omit(data)
 dim(data3)
 
-data[is.na(data)]=mean(SALARY[!is.na(SALARY)])   #meanº¯ÊıÊÇ¶Ô·ÇNAÖµµÄSALARYÊı¾İÇóÆ½¾ù
+data[is.na(data)]=mean(SALARY[!is.na(SALARY)])   #meanå‡½æ•°æ˜¯å¯¹éNAå€¼çš„SALARYæ•°æ®æ±‚å¹³å‡
 
 data=read.table("d:/data/salary.txt",header=T)
 names(data)=c("CITY","WORK","PRICE","SALARY")
 attach(data)
 data$SALARY=replace(SALARY,SALARY>65,NA)
-imp=mice(data,seed=1)  #Ëæ»úÄ£ÄâÊı¾İ
-fit=with(imp,lm(SALARY~WORK+PRICE))  #ÏßĞÔ»Ø¹é
-pooled=pool(fit)  #»Ø¹é½á¹û
-options(digits=3)  #ÏÔÊ¾Ğ¡ÊıµãºóÈıÎ»
+imp=mice(data,seed=1)  #éšæœºæ¨¡æ‹Ÿæ•°æ®
+fit=with(imp,lm(SALARY~WORK+PRICE))  #çº¿æ€§å›å½’
+pooled=pool(fit)  #å›å½’ç»“æœ
+options(digits=3)  #æ˜¾ç¤ºå°æ•°ç‚¹åä¸‰ä½
 summary(pooled)
 
-data.pre=data[is.na(data$SALARY),][,2:3]  #Ñ¡È¡È±Ê§Ñù±¾µÄWORKºÍPRICEÖµ
+data.pre=data[is.na(data$SALARY),][,2:3]  #é€‰å–ç¼ºå¤±æ ·æœ¬çš„WORKå’ŒPRICEå€¼
 data.pre=as.matrix(cbind(rep(1,4),data.pre))
-q=pooled$qbar  #Í¨¹ıÄâºÏ»Ø¹éÔ¤²âSALARY
-pre=data.pre%*%q;pre  #Ô¤²â½á¹û
+q=pooled$qbar  #é€šè¿‡æ‹Ÿåˆå›å½’é¢„æµ‹SALARY
+pre=data.pre%*%q;pre  #é¢„æµ‹ç»“æœ
 index=is.na(data$SALARY)
-data$SALARY[index]=pre   #Ìæ»»È±Ê§Öµ
+data$SALARY[index]=pre   #æ›¿æ¢ç¼ºå¤±å€¼
 data[index,]
 
 
@@ -90,17 +95,17 @@ a=c("Hongkong",1910,75.0,41.8)
 data1=rbind(data,a)
 data1[14:16,]
 
-weight=c(150,135,210,140)  #ÊıÖµĞÍÏòÁ¿
+weight=c(150,135,210,140)  #æ•°å€¼å‹å‘é‡
 height=c(65,61,70,65)
-gender=c("F","F","M","F")  #×Ö·ûĞÍÏòÁ¿
+gender=c("F","F","M","F")  #å­—ç¬¦å‹å‘é‡
 stu=data.frame(weight,height,gender)
 row.names(stu)=c("Alice","Bob","Cal","David")
 stu[,"weight"]
-stu["Cal",]  #»ñÈ¡ĞĞ
+stu["Cal",]  #è·å–è¡Œ
 stu[1:2,1:2]
-stu$weightt  # ¡±$¡±ÓÃÓÚÈ¡ÁĞ
-stu[["weight"]]  #Ë«À¨ºÅ+Ãû³Æ
-stu[[1]]  #Ë«À¨ºÅ+ÏÂ±ê£¬ÓÃÓÚÊı¾İ¿òºÍÁĞ±íÊı¾İµÄ»ñÈ¡
+stu$weightt  # â€$â€ç”¨äºå–åˆ—
+stu[["weight"]]  #åŒæ‹¬å·+åç§°
+stu[[1]]  #åŒæ‹¬å·+ä¸‹æ ‡ï¼Œç”¨äºæ•°æ®æ¡†å’Œåˆ—è¡¨æ•°æ®çš„è·å–
 
 index=list("City"=data$City,"Index"=1:15)
 index
@@ -136,13 +141,13 @@ install.packages("reshape2")
 library("reshape2", lib.loc="D:/R-3.0.1/library")
 melt(x)
 data(airquality)
-str(airquality)  #ÏÔÊ¾R¶ÔÏóµÄÄÚ²¿½á¹¹£¬¹¦ÄÜÀàËÆÓÚsummary()
+str(airquality)  #æ˜¾ç¤ºRå¯¹è±¡çš„å†…éƒ¨ç»“æ„ï¼ŒåŠŸèƒ½ç±»ä¼¼äºsummary()
 longdata=melt(airquality,id.vars=c("Ozone","Month","Day"),measure.vars=2:4)
 str(longdata)
 
 library(ggplot2)
 p=ggplot(data=longdata,aes(x=Ozone,y=value,color=factor(Month)))
-p+geom_point(shape=20,size=4)+facet_wrap(~variable,scales="free_y")+ geom_smooth(aes(group=1), fill="gray80")  #scale=¡±free_y¡±ÉèÖÃÃ¿¸öÍ¼ĞÎ×Ô¶¯µ÷ÕûyÖá·¶Î§
+p+geom_point(shape=20,size=4)+facet_wrap(~variable,scales="free_y")+ geom_smooth(aes(group=1), fill="gray80")  #scale=â€free_yâ€è®¾ç½®æ¯ä¸ªå›¾å½¢è‡ªåŠ¨è°ƒæ•´yè½´èŒƒå›´
 
 shortdata=dcast(longdata,formula=Ozone+Month+Day~variable)
 head(shortdata,5)
