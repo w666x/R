@@ -1,4 +1,10 @@
 ###安装R包的几种不同的方式
+## linux下安装R包
+  # 下载source包r包
+  # tar zxvf readxl_1.0.0.tar.gz 解压
+  #  R CMD INSTALL -l /home/wxing/R/x86_64-pc-linux-gnu-library/3.5 readxl
+  # 那些binary包（即下即用）的包，无法跨平台使用的
+
 ##githubinstall可以直接使用包名在github上安装
 library(devtools)
 #安装的时候，不仅需要包名，而且还需要仓库名
