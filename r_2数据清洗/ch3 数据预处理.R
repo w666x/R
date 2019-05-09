@@ -2,6 +2,8 @@
 # 根据DLR_CODE和ORDER_DATE分组对ORDER_6S做汇总并赋值给ORDER_6SD
 LAG_DATA_TRY[,ORDER_6SD := sum(ORDER_6S),by=list(DLR_CODE,ORDER_DATE)]
 
+# 从dataframe中匹配符合某些字符串中任意一个的数据项
+rename_path[grep(pattern = "a1$|a2$|a16$|a19$",rename_path$NAMES, perl = TRUE),]
 
 #3.1
 data=read.table("d:/data/salary.txt",header=T)
